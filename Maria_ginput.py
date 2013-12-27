@@ -1,9 +1,20 @@
 from __future__ import division
 import pylab
 from PIL import Image
+import matplotlib.pyplot as plt
+import numpy as np
 
-img = pylab.imread("images/blacksquare.jpg")
+pylab.gray()
+
+img = np.array(Image.open("images/blacksquare.jpg"))
+print img
+#img = np.array("images/blacksquare.jpg",dtype="float32")
+
 pylab.imshow(img)
+
+#plt.gray()
+#plt.imshow(img)
+
 pylab.axis([-1, 1, -1, 1])
 print "Please click four times"
 pts = pylab.ginput(4) # it will wait for three clicks
