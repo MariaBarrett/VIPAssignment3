@@ -10,7 +10,7 @@ import numpy as np
 from scipy import interpolate
 import matplotlib.pyplot as plt
 
-
+              
 def getInitialCurve(im, nbr_points):
     """ Select a number of vertices for builing a cubic spline planar 
     curve and return a set of nbr_points of that curve, with equidistant 
@@ -19,8 +19,7 @@ def getInitialCurve(im, nbr_points):
     im = np.array(im)
     plt.gray()
     plt.imshow(im)
-    vertices = np.array(plt.ginput(0))
-    
+    vertices = np.array(plt.ginput(0, timeout=5))
     # I add an extra point to close the curve
     # this is for spline interpolation
     # I will remove it from the interpolant
@@ -28,10 +27,11 @@ def getInitialCurve(im, nbr_points):
     vx = np.append(vx, vx[0])
     vy = vertices[:,1]
     vy = np.append(vy, vy[0])
-    
+
     nbr_vertices = len(vx)
-    t = np.linspace(0,nbr_vertices,nbr_vertices)
-    sx = interpolate.splrep(t, vx, s= 0)
+    t = np.linspace(0,nbr_vertices,nbr_vertices) #returns an array of numbers from 0 to nbr of clicks+1. Num of samples are also nbr of clicks+1. E.g. 4 clicks: ([0., x.x, x.x, x.x, 5.])
+    sx = interpolate.splrep(t, vx, s= 0) 
+    print sx
     sy = interpolate.splrep(t, vy, s= 0)
     tnew = np.linspace(0, nbr_vertices, nbr_points+1)
     
@@ -68,7 +68,7 @@ if __name__ == "__main__":
     
     x,y,points = getInitialCurve(im, 30)
     drawCurve(x, y, im)
-    #plt.plot(points[:,0], points[:,1], 'r+')
+    plt.plot(points[:,0], points[:,1], 'r+')
     f = np.vstack((x,y)).T
     f = np.matrix(f)
     rf = np.array(resample(f))

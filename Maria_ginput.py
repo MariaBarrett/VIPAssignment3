@@ -3,25 +3,24 @@ import pylab
 from PIL import Image
 import matplotlib.pyplot as plt
 import numpy as np
+from splinedraw import *
+from resample import resample
 
-pylab.gray()
+plt.gray() #print everything gray
 
-img = np.array(Image.open("images/blacksquare.jpg"))
-print img
-#img = np.array("images/blacksquare.jpg",dtype="float32")
+img = np.array(Image.open("images/blacksquare.png"))
 
-pylab.imshow(img)
+def IniCurveDraw(im, num):
+	"""
+	This function takes an image and gives you 5 sec to select some points. 
+	From these it draws an interpolated closed spline of num points. 
+	It calls Francois' functions to get initial curve and to draw it. 
+	The interpolated points are plotted using green circles
+	"""
+	plt.imshow(img)
+	x, y, points = getInitialCurve(img, num)
+	plt.figure()
+	drawCurve(x,y,img)
+	plt.show()
 
-#plt.gray()
-#plt.imshow(img)
-
-pylab.axis([-1, 1, -1, 1])
-print "Please click four times"
-pts = pylab.ginput(4) # it will wait for three clicks
-print "The point selected are"
-print pts # ginput returns points as tuples
-x=map(lambda x: x[0],pts) # map applies the function passed as 
-y=map(lambda x: x[1],pts) # first parameter to each element of pts
-pylab.plot(x,y,'-o')
-pylab.axis([-1, 1, -1, 1])
-pylab.show()
+IniCurveDraw(img,20)
