@@ -1,10 +1,11 @@
 from __future__ import division
-from scipy.ndimage import filters
+from scipy.ndimage.filters import gaussian_filter as gaus
 from resample import resample
 from splinedraw import *
 from PIL import Image
 import matplotlib.pyplot as plt
 import numpy as np
+import interpimage as interp
 
 
 plt.gray() #print everything gray
@@ -30,15 +31,15 @@ def IniCurveDraw(im, num):
 
 
 
-"""sysmatrix(N,alpha,beta,tao)
+"""sysmatrix(N,alpha,beta,tau)
 This function takes 5 different inputs, which can be specified by the user.
 It then solves the segmentation by creating a matrix of a linear system.
 It then returns the inverse of said matrix.
 """
-def sysmatrix(N,alpha,beta,tao):
-	A = tao*beta
-	B = -tao*(alpha+4*beta)
-	C = 1 + tao*(2*alpha+6*beta)
+def sysmatrix(N,alpha,beta,tau):
+	A = tau*beta
+	B = -tau*(alpha+4*beta)
+	C = 1 + tau*(2*alpha+6*beta)
 
 	#fill system matrix
 	M = np.zeros((N,N))
@@ -52,11 +53,6 @@ def sysmatrix(N,alpha,beta,tao):
 
 
 def extenergy(im):
-	iters = 50
-
-	gaus = filters.gaussian_filter()
-	LoG = filters.gaussian_laplace()
-
 	sigma = 3
 	fx = np.array(gaus(im,sigma,order=(1,0)))
 	fy = np.array(gaus(im,sigma,order=(0,1)))
@@ -64,18 +60,17 @@ def extenergy(im):
 	fxx = np.array(gaus(fx, sigma,order=(1,0)))
 	fyy = np.array(gaus(fy,sigma,order=(0,1)))
 
+
 	FX = -2*(fx*fxx + fy*fxy)
 	FY = -2*(fx*fxy + fy*fyy)
-	FI = -(LoG(im,sigma))**2
 
 	IX = interp.InterpImage(FX)
 	IY = interp.InterpImage(FY)
-	II = interp.InterpImage(FI)
 
-	return IX,IY,II
+	return IX,IY
 
 def calculate():
-	print "ssomething something"
+	print "do"
 
 
 #--------------------------------------------------------------------------
@@ -83,37 +78,10 @@ def calculate():
 ##Settings 
 
 
-
-"""step-by-step()
-This function allows the user to select whether the segmentation i performed step-by-step or not.
-The  
-
-"""
-def step_by_step():
-	legal = ["y", "n"]
-	print "-"*45
-	print "Do you want to perform the analysis step by step?"
-	print "-"*45
-	usercmd = raw_input("y or n:")
-
-	if usercmd == "y":
-		print "You perform step-by-step." 
-		return True
-		
-	if usercmd == "n":
-		print "You do not perform step-by-step."
-		return False
-	
-	if usercmd not in legal:
-		print "invalid input"
-		userinput()
-		
-
-
 """nbr_points()
 This functions allows the user to choose number of points in the snake. 
 If the submitted string contains only digits, it is turned into int, validated and returned from the function.
-"""
+
 def nbr_points():
 	print "-"*45
 	print "Select number of points in the curve.\n"
@@ -129,7 +97,7 @@ def nbr_points():
 		print "Invalid input"
 		userinput()
 
-
+"""
 ## Menu 
 
 """userinput()
@@ -161,35 +129,32 @@ def commands(cmd):
 		userinput()
 
 	elif cmd == "1":
-		points = nbr_points()
-		step = step_by_step()
 		print "You have 5 seconds to choose points for the initial curve \n"
-		x = IniCurveDraw(img1, points)
+		x = IniCurveDraw(img1, 100)
+		Fp = extenergy(img1)
 
 	elif cmd == "2":
-		points = nbr_points()
-		step = step_by_step()
 		print "You have 5 seconds to choose points for the initial curve \n"		
-		x = IniCurveDraw(img2, points)
-		
+		x = IniCurveDraw(img2, 100)
+		Fp = extenergy(img2)
 
 	elif cmd == "3":
 		print "Quit succesfully."
 		raise SystemExit()
 
 
-	print "Please select the numerical values for alpha, beta and tao seperated by comma"
-	v = raw_input("Alpha,beta,tao: ")
+	print "Please select the numerical values for alpha, beta and tau seperated by comma"
+	v = raw_input("Alpha,beta,tau: ")
 	v = v.split(',')
 
 	for elem in v:
-		if elem.isdigit() == False:
+		if not elem.isdigit():
 			break
 			userinput()
 	
-	alpha,beta,tao = float(v[0]),float(v[1]),float(v[2])
+	alpha,beta,tau = float(v[0]),float(v[1]),float(v[2])
+	Minv = sysmatrix(len(x[1]),alpha,beta,tau)
 
-	M = sysmatrix(len(x[1]),alpha,beta,tao)
 
 	userinput()
 
