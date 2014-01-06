@@ -56,9 +56,9 @@ def extenergy(im):
 	sigma = 3
 	fx = np.array(gaus(im,sigma,order=(1,0)))
 	fy = np.array(gaus(im,sigma,order=(0,1)))
-	fxy = np.array(gaus(fx, sigma,order=(0,1)))
-	fxx = np.array(gaus(fx, sigma,order=(1,0)))
-	fyy = np.array(gaus(fy,sigma,order=(0,1)))
+	fxy = np.array(gaus(im, sigma,order=(1,1)))
+	fxx = np.array(gaus(im, sigma,order=(2,0)))
+	fyy = np.array(gaus(im,sigma,order=(0,2)))
 
 
 	FX = -2*(fx*fxx + fy*fxy)
@@ -122,6 +122,7 @@ It then calls settings-functions which promps the user for entering settings for
 When that function is done, it will call userinput() again.
 """
 def commands(cmd):
+	plt.close()
 	legal = ["1","2","3"]
 
 	if cmd not in legal:
@@ -130,12 +131,12 @@ def commands(cmd):
 
 	elif cmd == "1":
 		print "You have 5 seconds to choose points for the initial curve \n"
-		x = IniCurveDraw(img1, 100)
+		x,y = IniCurveDraw(img1, 100)
 		Fp = extenergy(img1)
 
 	elif cmd == "2":
 		print "You have 5 seconds to choose points for the initial curve \n"		
-		x = IniCurveDraw(img2, 100)
+		x,y = IniCurveDraw(img2, 100)
 		Fp = extenergy(img2)
 
 	elif cmd == "3":
@@ -144,18 +145,33 @@ def commands(cmd):
 
 
 	print "Please select the numerical values for alpha, beta and tau seperated by comma"
-	v = raw_input("Alpha,beta,tau: ")
+	v = raw_input("Alpha,beta,tau,gamma: ")
 	v = v.split(',')
+	assert len(v) == 4
 
 	for elem in v:
 		if not elem.isdigit():
 			break
 			userinput()
 	
-	alpha,beta,tau = float(v[0]),float(v[1]),float(v[2])
-	Minv = sysmatrix(len(x[1]),alpha,beta,tau)
+	alpha,beta,tau,gamma = float(v[0]),float(v[1]),float(v[2]),float(v[3])
+	Minv = sysmatrix(len(x),alpha,beta,tau)
 
+	for c in xrange(100):
+	    for i in range(len(x)):
+	        bx = Fp[0].bilinear(x[i],y[i])
+	        x[i] = x[i]+gamma*bx
 
+	        by = Fp[1].bilinear(x[i],y[i])
+	        y[i] = y[i]+gamma*by
+
+	    x = np.dot(Minv,x)
+	    y = np.dot(Minv,y)
+
+	    if c % 20 == 0:
+	        plt.plot(np.append(x,[x[0]]), np.append(y,[y[0]]), "r-")
+
+	plt.show()
 	userinput()
 
 """main()
