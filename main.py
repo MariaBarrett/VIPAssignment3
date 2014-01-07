@@ -79,26 +79,6 @@ def calculate():
 ##Settings 
 
 
-"""nbr_points()
-This functions allows the user to choose number of points in the snake. 
-If the submitted string contains only digits, it is turned into int, validated and returned from the function.
-
-def nbr_points():
-	print "-"*45
-	print "Select number of points in the curve.\n"
-	nbr_points = raw_input("Write an integer between 5 and 50:")
-	if nbr_points.isdigit():
-		nbr_points = int(nbr_points)
-		if nbr_points < 51 and nbr_points > 4:
-			return nbr_points
-		else:
-			print "Invalid input"
-			userinput()
-	else:
-		print "Invalid input"
-		userinput()
-
-"""
 ## Menu 
 
 """userinput()
@@ -160,7 +140,7 @@ def commands(cmd):
 			try:
     				float(elem) #don't know why it only accepts double indentation
 			except ValueError:
-    				print "Invalid input. Only int or floats allowed"
+    				print "Invalid input. Only int and floats allowed"
     				userinput()
 	else: 
 		print "Invalid input. Enter exactly 4 values separated by comma"
@@ -169,7 +149,7 @@ def commands(cmd):
 	alpha,beta,tau,gamma = float(v[0]),float(v[1]),float(v[2]),float(v[3])
 	Minv = sysmatrix(len(x),alpha,beta,tau)
 
-	for c in xrange(100):
+	for c in xrange(300):
 	    for i in range(len(x)):
 	        bx = Fp[0].bilinear(x[i],y[i])
 	        x[i] = x[i]+gamma*bx
@@ -195,3 +175,8 @@ def main():
 
 if __name__ =='__main__':
     main(); 
+
+"""
+alpha :      elasticity parameter (membrane)
+beta :       rigidity parameter (thin plate)
+"""
