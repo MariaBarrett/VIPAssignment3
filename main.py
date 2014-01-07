@@ -14,6 +14,7 @@ plt.ion() #interactive mode
 #-------------------------------------------------------------------------
 img1 = np.array(Image.open("images/blacksquare.png"))
 img2 = np.array(Image.open("images/kanizsa_triangle.gif"))
+img3 = np.array(Image.open("images/coins.jpg"))
 
 
 """IniCurveDraw(image,number of points)
@@ -110,7 +111,8 @@ def userinput():
 	print "-"*45
 	print "1. Black square"
 	print "2. Kanizsa triangle"
-	print "3. Exit"
+	print "3. Coins"
+	print "4. Exit"
 	print "-"*45
 	usercmd = raw_input("Choose an option: ")
 	commands(usercmd)
@@ -123,7 +125,7 @@ When that function is done, it will call userinput() again.
 """
 def commands(cmd):
 	plt.close()
-	legal = ["1","2","3"]
+	legal = ["1","2","3","4"]
 
 	if cmd not in legal:
 		print "Invalid input. Please enter one of the possible values.\n"
@@ -140,6 +142,11 @@ def commands(cmd):
 		Fp = extenergy(img2)
 
 	elif cmd == "3":
+		print "You have 5 seconds to choose points for the initial curve \n"		
+		x,y = IniCurveDraw(img3, 100)
+		Fp = extenergy(img3)
+
+	elif cmd == "4":
 		print "Quit succesfully."
 		raise SystemExit()
 
@@ -147,13 +154,18 @@ def commands(cmd):
 	print "Please select the numerical values for alpha, beta and tau seperated by comma"
 	v = raw_input("Alpha,beta,tau,gamma: ")
 	v = v.split(',')
-	assert len(v) == 4
 
-	for elem in v:
-		if not elem.isdigit():
-			break
-			userinput()
-	
+	if len(v) == 4:
+		for elem in v:
+			try:
+    				float(elem) #don't know why it only accepts double indentation
+			except ValueError:
+    				print "Invalid input. Only int or floats allowed"
+    				userinput()
+	else: 
+		print "Invalid input. Enter exactly 4 values separated by comma"
+		userinput()
+		
 	alpha,beta,tau,gamma = float(v[0]),float(v[1]),float(v[2]),float(v[3])
 	Minv = sysmatrix(len(x),alpha,beta,tau)
 
