@@ -70,9 +70,6 @@ def extenergy(im):
 
 	return IX,IY
 
-def calculate():
-	print "do"
-
 
 #--------------------------------------------------------------------------
 #Interface
@@ -152,19 +149,29 @@ def commands(cmd):
 	alpha,beta,tau,gamma = float(v[0]),float(v[1]),float(v[2]),float(v[3])
 	Minv = sysmatrix(len(x),alpha,beta,tau)
 
-	for c in xrange(10000):
+	new_x = np.copy(x)
+	new_y = np.copy(y)	
+
+	"""
+	@TODO: Utilize the new_x and new_y so that our coordinates update correctly.
+	Currently we are rewriting the x variable as soon as the calculation for x is done, meaning the y calculation is done with the old y but a new x, which is not correct!
+	It should then compute with these updated x and y values (like the dot product of M*x and M*y).
+	If you are confused, check the slides on the LINEAR SYSTEM (not system matrix).
+	Hint: you can use new_x and new_y or just a zero array.
+	"""
+	for c in xrange(1000):
 	    for i in range(len(x)):
-	        bx = Fp[0].bicubic(x[i],y[i])
+	        bx = Fp[0].bilinear(x[i],y[i]) #Wrong
 	        x[i] = x[i]-gamma*bx
 
-	        by = Fp[1].bicubic(x[i],y[i])
+	        by = Fp[1].bilinear(x[i],y[i]) #Wrong
 	        y[i] = y[i]-gamma*by
 
 	    x = np.dot(Minv,x)
 	    y = np.dot(Minv,y)
 
-	    if c % 2000 == 0:
-	        plt.plot(np.append(x,[x[0]]), np.append(y,[y[0]]), "p-")
+	    if c % 200 == 0:
+	        plt.plot(np.append(x,[x[0]]), np.append(y,[y[0]]), "r-")
 
 	plt.show()
 	userinput()
