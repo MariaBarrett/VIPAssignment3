@@ -54,7 +54,7 @@ def sysmatrix(N,alpha,beta,tau):
 
 
 def extenergy(im):
-	sigma = 5
+	sigma = 3
 	fx = np.array(gaus(im,sigma,order=(1,0)))
 	fy = np.array(gaus(im,sigma,order=(0,1)))
 	fxy = np.array(gaus(im, sigma,order=(1,1)))
@@ -156,10 +156,10 @@ def commands(cmd):
 	for c in xrange(10000):
 	    for i in range(len(x)):
 	        bx = Fp[0].bilinear(x[i],y[i])
-	        x[i] = x[i]-(gamma*bx)
+	        x[i] = x[i]-gamma*bx
 
 	        by = Fp[1].bilinear(x[i],y[i])
-	        y[i] = y[i]-(gamma*by)
+	        y[i] = y[i]-gamma*by
 
 	    x = np.dot(Minv,x)
 	    y = np.dot(Minv,y)
