@@ -54,7 +54,7 @@ def sysmatrix(N,alpha,beta,tau):
 
 
 def extenergy(im):
-	sigma = 3
+	sigma = 5
 	fx = np.array(gaus(im,sigma,order=(1,0)))
 	fy = np.array(gaus(im,sigma,order=(0,1)))
 	fxy = np.array(gaus(im, sigma,order=(1,1)))
@@ -113,17 +113,17 @@ def commands(cmd):
 
 	elif cmd == "1":
 		print "You have 5 seconds to choose points for the initial curve \n"
-		x,y = IniCurveDraw(img1, 100)
+		x,y = IniCurveDraw(img1, 20)
 		Fp = extenergy(img1)
 
 	elif cmd == "2":
 		print "You have 5 seconds to choose points for the initial curve \n"		
-		x,y = IniCurveDraw(img2, 100)
+		x,y = IniCurveDraw(img2, 20)
 		Fp = extenergy(img2)
 
 	elif cmd == "3":
 		print "You have 5 seconds to choose points for the initial curve \n"		
-		x,y = IniCurveDraw(img3, 100)
+		x,y = IniCurveDraw(img3, 20)
 		Fp = extenergy(img3)
 
 	elif cmd == "4":
@@ -145,26 +145,32 @@ def commands(cmd):
 	else: 
 		print "Invalid input. Enter exactly 4 values separated by comma"
 		userinput()
-		
+	
+	"""
+	We perform the final calculation step here, since we can easily acquire the needed variables
+	"""
 	alpha,beta,tau,gamma = float(v[0]),float(v[1]),float(v[2]),float(v[3])
 	Minv = sysmatrix(len(x),alpha,beta,tau)
+	print alpha,beta,tau,gamma
 
-	for c in xrange(300):
+	for c in xrange(10000):
 	    for i in range(len(x)):
 	        bx = Fp[0].bilinear(x[i],y[i])
-	        x[i] = x[i]+gamma*bx
+	        x[i] = x[i]-(gamma*bx)
 
 	        by = Fp[1].bilinear(x[i],y[i])
-	        y[i] = y[i]+gamma*by
+	        y[i] = y[i]-(gamma*by)
 
 	    x = np.dot(Minv,x)
 	    y = np.dot(Minv,y)
 
-	    if c % 20 == 0:
+	    if c % 2000 == 0:
 	        plt.plot(np.append(x,[x[0]]), np.append(y,[y[0]]), "r-")
 
 	plt.show()
 	userinput()
+
+
 
 """main()
 Starts the programme by calling the userinput-function
