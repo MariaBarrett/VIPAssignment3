@@ -131,7 +131,7 @@ def commands(cmd):
 		raise SystemExit()
 
 
-	print "Please select the numerical values for alpha, beta and tau seperated by comma"
+	print "Please select the numerical values for alpha, beta, tau and gamma seperated by comma"
 	v = raw_input("Alpha,beta,tau,gamma: ")
 	v = v.split(',')
 
@@ -181,6 +181,7 @@ def main():
 
 if __name__ =='__main__':
     main(); 
+
 
 """
 alpha :      elasticity parameter (membrane)
