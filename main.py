@@ -125,8 +125,11 @@ def calculate(x, y, Fp, alpha, beta, tau, gamma):
 	    x = np.matrix(x)
 	    y = np.matrix(y)
 
-	    x = np.dot(Minv, np.transpose(x))
+	    x = np.dot(Minv, np.transpose(x)) #which to use?
 	    y = np.dot(Minv, np.transpose(y))
+
+	    #x = np.dot(x, Minv) #or this one? Neither is really good
+	    #y = np.dot(y, Minv)
 	    
 	    x = np.squeeze(np.asarray(x)) 
 	    y = np.squeeze(np.asarray(y)) 
