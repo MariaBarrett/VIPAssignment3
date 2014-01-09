@@ -160,13 +160,13 @@ def commands(cmd):
 	Hint: you can use new_x and new_y or just a zero array.
 	"""
 
-	for c in xrange(1000):
+	for c in xrange(1):
 	    for i in range(len(x)):
 	        bx = Fp[0].bilinear(x[i],y[i]) #Wrong
-	        by = Fp[1].bilinear(x[i],y[i]) #Wrong
-	        
 	        new_x[i] = x[i]-gamma*bx
-	        new_y[i] = y[i]-gamma*by
+	        
+	        by = Fp[1].bilinear(x[i],y[i]) #Wrong
+	       	new_y[i] = y[i]-gamma*by
 
 	        x[i] = new_x[i]
 	        y[i] = new_y[i]
@@ -174,8 +174,8 @@ def commands(cmd):
 	    x = np.dot(Minv,x)
 	    y = np.dot(Minv,y)
 
-	    #if c % 10 == 0:
-	    plt.plot(np.append(x,[x[0]]), np.append(y,[y[0]]), "r-")
+	    if c % 1 == 0:
+	    	plt.plot(np.append(x,[x[0]]), np.append(y,[y[0]]), "r-")
 
 	plt.show()
 	userinput()

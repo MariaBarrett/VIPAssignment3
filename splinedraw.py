@@ -55,8 +55,7 @@ def drawCurve(x,y, im=None):
     cx = np.append(x, x[0])
     cy = np.append(y, y[0])
     plt.plot(cx, cy, '+-')
-    plt.axis('off')
-    
+     
     
     
     
