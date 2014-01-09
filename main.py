@@ -49,10 +49,7 @@ def sysmatrix(N,alpha,beta,tau):
 	    M[p] = np.roll(M[p-1],1)
 	M = np.linalg.inv(M) 
 	Matrix = np.matrix(M)
-	print Matrix
 	return Matrix
-
-
 
 def extenergy(im):
 	sigma = 1.4
@@ -71,6 +68,69 @@ def extenergy(im):
 
 	return IX,IY
 
+
+def vari():
+	print "Please select the numerical values for alpha, beta, tau and gamma seperated by comma"
+	v = raw_input("Alpha,beta,tau,gamma: ")
+	v = v.split(',')
+
+	if len(v) == 4:
+		for elem in v:
+			try:
+    				float(elem) #don't know why it only accepts double indentation
+			except ValueError:
+    				print "Invalid input. Only int and floats allowed"
+    				userinput()
+	else: 
+		print "Invalid input. Enter exactly 4 values separated by comma"
+		userinput()
+
+	
+	alpha,beta,tau,gamma = float(v[0]),float(v[1]),float(v[2]),float(v[3])
+	return alpha, beta, tau, gamma
+
+
+	"""
+	@TODO: Utilize the new_x and new_y so that our coordinates update correctly.
+	Currently we are rewriting the x variable as soon as the calculation for x is done, meaning the y calculation is done with the old y but a new x, which is not correct!
+	It should then compute with these updated x and y values (like the dot product of M*x and M*y).
+	If you are confused, check the slides on the LINEAR SYSTEM (not system matrix).
+	Hint: you can use new_x and new_y or just a zero array.
+	"""
+def calculate(x, y, Fp, alpha, beta, tau, gamma):
+	new_x = np.copy(x)
+	new_y = np.copy(y)	
+
+	Minv = sysmatrix(len(x),alpha,beta,tau)
+
+	for c in xrange(100):
+	    for i in range(len(x)):
+	    	#print x
+	        bx = Fp[0].bilinear(x[i],y[i]) #Wrong
+	        new_x[i] = x[i]-gamma*bx
+	        
+	        by = Fp[1].bilinear(x[i],y[i]) #Wrong
+	       	new_y[i] = y[i]-gamma*by
+
+	    x = new_x
+	    y = new_y
+
+	    x = np.matrix(x)
+	    y = np.matrix(y)
+	    #print x.shape
+	    #print Minv.shape
+	    x = np.dot(Minv, np.transpose(x))
+	    y = np.dot(Minv, np.transpose(y))
+	    
+	    x = np.squeeze(np.asarray(x)) 
+	    y = np.squeeze(np.asarray(y)) 
+	    	
+	    if c % 10 == 0:
+	    	print x
+	    	plt.plot(np.append(x,[x[0]]), np.append(y,[y[0]]), "r-")
+
+	plt.show()
+	userinput()
 
 #--------------------------------------------------------------------------
 #Interface
@@ -113,6 +173,8 @@ def commands(cmd):
 		print "You have 5 seconds to choose points for the initial curve \n"
 		x,y = IniCurveDraw(img1, 100)
 		Fp = extenergy(img1)
+		alpha, beta, tau, gamma = vari()
+		calculate(x, y, Fp, alpha, beta, tau, gamma)
 
 	elif cmd == "2":
 		print "You have 5 seconds to choose points for the initial curve \n"		
@@ -128,67 +190,6 @@ def commands(cmd):
 		print "Quit succesfully."
 		raise SystemExit()
 
-
-	print "Please select the numerical values for alpha, beta, tau and gamma seperated by comma"
-	v = raw_input("Alpha,beta,tau,gamma: ")
-	v = v.split(',')
-
-	if len(v) == 4:
-		for elem in v:
-			try:
-    				float(elem) #don't know why it only accepts double indentation
-			except ValueError:
-    				print "Invalid input. Only int and floats allowed"
-    				userinput()
-	else: 
-		print "Invalid input. Enter exactly 4 values separated by comma"
-		userinput()
-	
-	"""
-	We perform the final calculation step here, since we can easily acquire the needed variables
-	"""
-	alpha,beta,tau,gamma = float(v[0]),float(v[1]),float(v[2]),float(v[3])
-	Minv = sysmatrix(len(x),alpha,beta,tau)
-
-	new_x = np.copy(x)
-	new_y = np.copy(y)	
-
-	"""
-	@TODO: Utilize the new_x and new_y so that our coordinates update correctly.
-	Currently we are rewriting the x variable as soon as the calculation for x is done, meaning the y calculation is done with the old y but a new x, which is not correct!
-	It should then compute with these updated x and y values (like the dot product of M*x and M*y).
-	If you are confused, check the slides on the LINEAR SYSTEM (not system matrix).
-	Hint: you can use new_x and new_y or just a zero array.
-	"""
-
-	for c in xrange(2):
-	    for i in range(len(x)):
-	    	print x
-	        bx = Fp[0].bilinear(x[i],y[i]) #Wrong
-	        new_x[i] = x[i]-gamma*bx
-	        
-	        by = Fp[1].bilinear(x[i],y[i]) #Wrong
-	       	new_y[i] = y[i]-gamma*by
-
-	    x = new_x
-	    y = new_y
-
-	    x = np.matrix(x)
-	    y = np.matrix(y)
-	    #print x.shape
-	    #print Minv.shape
-	    x = np.dot(Minv, np.transpose(x))
-	    y = np.dot(Minv, np.transpose(y))
-	    
-	    x = np.squeeze(np.asarray(x)) 
-	    y = np.squeeze(np.asarray(y)) 
-	    	
-	    if c % 1 == 0:
-	    	print x
-	    	plt.plot(np.append(x,[x[0]]), np.append(y,[y[0]]), "r-")
-
-	plt.show()
-	userinput()
 
 
 
