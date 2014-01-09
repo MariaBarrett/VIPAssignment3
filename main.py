@@ -68,7 +68,10 @@ def extenergy(im):
 
 	return IX,IY
 
-
+"""
+def vari()
+This function prompts the user for alpha, beta, tau en gamma values. It validates the number and type of the input
+"""
 def vari():
 	print "Please select the numerical values for alpha, beta, tau and gamma seperated by comma"
 	v = raw_input("Alpha,beta,tau,gamma: ")
@@ -97,15 +100,19 @@ def vari():
 	If you are confused, check the slides on the LINEAR SYSTEM (not system matrix).
 	Hint: you can use new_x and new_y or just a zero array.
 	"""
+"""
+def calculate(x, y, Fp, alpha, beta, tau, gamma)
+This function calls the systemmatrix function to calculate the inv matrix
+From the array of x and y coordinates it updates the values and plots a fraction of them onto the image
+"""
 def calculate(x, y, Fp, alpha, beta, tau, gamma):
 	new_x = np.copy(x)
 	new_y = np.copy(y)	
 
 	Minv = sysmatrix(len(x),alpha,beta,tau)
 
-	for c in xrange(100):
+	for c in xrange(100): # number of iterations
 	    for i in range(len(x)):
-	    	#print x
 	        bx = Fp[0].bilinear(x[i],y[i]) #Wrong
 	        new_x[i] = x[i]-gamma*bx
 	        
@@ -117,15 +124,14 @@ def calculate(x, y, Fp, alpha, beta, tau, gamma):
 
 	    x = np.matrix(x)
 	    y = np.matrix(y)
-	    #print x.shape
-	    #print Minv.shape
+
 	    x = np.dot(Minv, np.transpose(x))
 	    y = np.dot(Minv, np.transpose(y))
 	    
 	    x = np.squeeze(np.asarray(x)) 
 	    y = np.squeeze(np.asarray(y)) 
 	    	
-	    if c % 10 == 0:
+	    if c % 10 == 0: 
 	    	print x
 	    	plt.plot(np.append(x,[x[0]]), np.append(y,[y[0]]), "r-")
 
