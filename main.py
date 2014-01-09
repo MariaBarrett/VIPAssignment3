@@ -48,8 +48,9 @@ def sysmatrix(N,alpha,beta,tau):
 	for p in xrange(1, len(M)):
 	    M[p] = np.roll(M[p-1],1)
 	M = np.linalg.inv(M) 
-
-	return M
+	Matrix = np.matrix(M)
+	print Matrix
+	return Matrix
 
 
 
@@ -170,11 +171,17 @@ def commands(cmd):
 
 	        x[i] = new_x[i]
 	        y[i] = new_y[i]
-
-	    x = np.dot(Minv,x)
-	    y = np.dot(Minv,y)
+	        
+	    x = np.matrix(x)
+	    y = np.matrix(y)
+	    #print x.shape
+	    #print Minv.shape
+	    x = np.dot(Minv, np.transpose(x))
+	    y = np.dot(Minv, np.transpose(y))
 
 	    if c % 1 == 0:
+	    	x = np.asarray(x)
+	    	y = np.asarray(y)
 	    	plt.plot(np.append(x,[x[0]]), np.append(y,[y[0]]), "r-")
 
 	plt.show()
