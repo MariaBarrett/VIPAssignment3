@@ -161,27 +161,30 @@ def commands(cmd):
 	Hint: you can use new_x and new_y or just a zero array.
 	"""
 
-	for c in xrange(1):
+	for c in xrange(2):
 	    for i in range(len(x)):
+	    	print x
 	        bx = Fp[0].bilinear(x[i],y[i]) #Wrong
 	        new_x[i] = x[i]-gamma*bx
 	        
 	        by = Fp[1].bilinear(x[i],y[i]) #Wrong
 	       	new_y[i] = y[i]-gamma*by
 
-	        x[i] = new_x[i]
-	        y[i] = new_y[i]
-	        
+	    x = new_x
+	    y = new_y
+
 	    x = np.matrix(x)
 	    y = np.matrix(y)
 	    #print x.shape
 	    #print Minv.shape
 	    x = np.dot(Minv, np.transpose(x))
 	    y = np.dot(Minv, np.transpose(y))
-
+	    
+	    x = np.squeeze(np.asarray(x)) 
+	    y = np.squeeze(np.asarray(y)) 
+	    	
 	    if c % 1 == 0:
-	    	x = np.asarray(x)
-	    	y = np.asarray(y)
+	    	print x
 	    	plt.plot(np.append(x,[x[0]]), np.append(y,[y[0]]), "r-")
 
 	plt.show()
