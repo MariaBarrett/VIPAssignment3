@@ -3,6 +3,7 @@ from scipy.ndimage.filters import gaussian_filter as gaus
 from resample import resample
 from splinedraw import *
 from PIL import Image
+from scipy.interpolate import *
 import matplotlib.pyplot as plt
 import numpy as np
 import interpimage as interp
@@ -12,9 +13,9 @@ plt.gray() #print everything gray
 plt.ion() #interactive mode
 
 #-------------------------------------------------------------------------
-img1 = np.array(Image.open("images/blacksquare.png"))
-img2 = np.array(Image.open("images/kanizsa_triangle.gif"))
-img3 = np.array(Image.open("images/coins.jpg"))
+img1 = np.array(Image.open("images/blacksquare.png"),dtype=float)
+img2 = np.array(Image.open("images/kanizsa_triangle.gif"),dtype=float)
+img3 = np.array(Image.open("images/coins.jpg"),dtype=float)
 
 
 """IniCurveDraw(image,number of points)
@@ -53,11 +54,11 @@ def sysmatrix(N,alpha,beta,tau):
 
 def extenergy(im):
 	sigma = 1.4
-	fx = np.array(gaus(im,sigma,order=(1,0)))
-	fy = np.array(gaus(im,sigma,order=(0,1)))
-	fxy = np.array(gaus(im, sigma,order=(1,1)))
-	fxx = np.array(gaus(im, sigma,order=(2,0)))
-	fyy = np.array(gaus(im,sigma,order=(0,2)))
+	fx = np.array(gaus(im,sigma,order=(1,0)),dtype=float)
+	fy = np.array(gaus(im,sigma,order=(0,1)),dtype=float)
+	fxy = np.array(gaus(im, sigma,order=(1,1)),dtype=float)
+	fxx = np.array(gaus(im, sigma,order=(2,0)),dtype=float)
+	fyy = np.array(gaus(im,sigma,order=(0,2)),dtype=float)
 
 
 	FX = -2*(fx*fxx + fy*fxy)
@@ -93,13 +94,7 @@ def vari():
 	return alpha, beta, tau, gamma
 
 
-	"""
-	@TODO: Utilize the new_x and new_y so that our coordinates update correctly.
-	Currently we are rewriting the x variable as soon as the calculation for x is done, meaning the y calculation is done with the old y but a new x, which is not correct!
-	It should then compute with these updated x and y values (like the dot product of M*x and M*y).
-	If you are confused, check the slides on the LINEAR SYSTEM (not system matrix).
-	Hint: you can use new_x and new_y or just a zero array.
-	"""
+
 """
 def calculate(x, y, Fp, alpha, beta, tau, gamma)
 This function calls the systemmatrix function to calculate the inv matrix
@@ -107,17 +102,19 @@ From the array of x and y coordinates it updates the values and plots a fraction
 """
 def calculate(x, y, Fp, alpha, beta, tau, gamma):
 	new_x = np.copy(x)
-	new_y = np.copy(y)	
+	new_y = np.copy(y)
 
 	Minv = sysmatrix(len(x),alpha,beta,tau)
 
-	for c in xrange(100): # number of iterations
-	    for i in range(len(x)):
-	        bx = Fp[0].bilinear(x[i],y[i]) #Wrong
-	        new_x[i] = x[i]-gamma*bx
-	        
-	        by = Fp[1].bilinear(x[i],y[i]) #Wrong
-	       	new_y[i] = y[i]-gamma*by
+	for c in xrange(10): # number of iterations
+	    for i in xrange(x.size):
+	    	print (Fp[0].bilinear(x[i],y[i])),(Fp[1].bilinear(x[i],y[i]))
+	    	bx = Fp[0].bilinear(x[i],y[i])
+	    	by = Fp[1].bilinear(x[i],y[i])
+	    	if bx < 30:
+        		new_x[i] = x[i]-gamma*bx
+        	elif by < 30:
+        		new_y[i] = y[i]-gamma*by
 
 	    x = new_x
 	    y = new_y
@@ -125,20 +122,20 @@ def calculate(x, y, Fp, alpha, beta, tau, gamma):
 	    x = np.matrix(x)
 	    y = np.matrix(y)
 
-	    x = np.dot(Minv, np.transpose(x)) #which to use?
-	    y = np.dot(Minv, np.transpose(y))
+	    x = np.dot(Minv,np.transpose(x)) #which to use?
+	    y = np.dot(Minv,np.transpose(y))
 
 	    #x = np.dot(x, Minv) #or this one? Neither is really good
 	    #y = np.dot(y, Minv)
-	    
+
 	    x = np.squeeze(np.asarray(x)) 
 	    y = np.squeeze(np.asarray(y)) 
-	    	
-	    if c % 10 == 0: 
-	    	print x
-	    	plt.plot(np.append(x,[x[0]]), np.append(y,[y[0]]), "r-")
 
-	plt.show()
+	    if c % 1 == 0: 
+	    	plt.plot(np.append(x,[x[0]]), np.append(y,[y[0]]), "r-")
+	    	plt.draw()
+
+	#plt.show()
 	userinput()
 
 #--------------------------------------------------------------------------
@@ -182,27 +179,24 @@ def commands(cmd):
 		print "You have 5 seconds to choose points for the initial curve \n"
 		x,y = IniCurveDraw(img1, 100)
 		Fp = extenergy(img1)
-		alpha, beta, tau, gamma = vari()
-		calculate(x, y, Fp, alpha, beta, tau, gamma)
 
 	elif cmd == "2":
 		print "You have 5 seconds to choose points for the initial curve \n"		
 		x,y = IniCurveDraw(img2, 100)
 		Fp = extenergy(img2)
-		alpha, beta, tau, gamma = vari()
-		calculate(x, y, Fp, alpha, beta, tau, gamma)
 
 	elif cmd == "3":
 		print "You have 5 seconds to choose points for the initial curve \n"		
 		x,y = IniCurveDraw(img3, 100)
 		Fp = extenergy(img3)
-		alpha, beta, tau, gamma = vari()
-		calculate(x, y, Fp, alpha, beta, tau, gamma)
+
 
 	elif cmd == "4":
 		print "Quit succesfully."
 		raise SystemExit()
 
+	alpha, beta, tau, gamma = vari()
+	calculate(x, y, Fp, alpha, beta, tau, gamma)
 
 
 
