@@ -11,10 +11,11 @@ plt.gray() #print everything gray
 plt.ion() #interactive mode
 
 #-------------------------------------------------------------------------
-img1 = np.array(Image.open("images/blacksquare.png"),dtype=float)/255
-img2 = np.array(Image.open("images/coins.jpg"),dtype=float)/255
-img3 = np.array(Image.open("images/lotsofcoins.jpg"),dtype=float)/255
-
+img1 = np.array(Image.open("images/blacksquare.png").convert('L'),dtype=float)/255
+img2 = np.array(Image.open("images/coins.jpg").convert('L'),dtype=float)/255
+#img3 = np.array(Image.open("images/lotsofcoins.jpg").convert('L'),dtype=float)/255
+#img3 = np.array(Image.open("images/apple.jpg").convert('L'),dtype=float)/255
+img3 = np.array(Image.open("images/gestalt.jpg").convert('L'),dtype=float)/255
 
 """IniCurveDraw(image,number of points)
 This function takes an image and gives you 5 sec to select some points. 
@@ -105,7 +106,7 @@ def calculate(im,x, y, Fp, alpha, beta, tau, gamma):
 	Minv = sysmatrix(len(x),alpha,beta,tau)
 
 
-	for c in xrange(30000): # number of iterations
+	for c in xrange(10000): # number of iterations
 	    for i in xrange(len(x)):
 	    	#bx = Fp[0].bilinear(int(x[i]),int(y[i]))
 	    	#by = Fp[1].bilinear(int(x[i]),int(y[i]))
@@ -139,11 +140,11 @@ The input is then used as an ouput to call the commands(cmd) function.
 """
 def userinput():
 	print "="*60
-	print "Choose between 2 images. \n"
+	print "Choose an image. \n"
 	print "-"*45
 	print "1. Black square"
 	print "2. Coins"
-	print "3. Lot of coins"
+	print "3. Gestalt"
 	print "4. Exit"
 	print "-"*45
 	usercmd = raw_input("Choose an option: ")
