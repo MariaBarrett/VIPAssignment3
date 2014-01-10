@@ -15,8 +15,8 @@ plt.ion() #interactive mode
 
 #-------------------------------------------------------------------------
 img1 = np.array(Image.open("images/blacksquare.png"),dtype=float)/255
-img2 = np.array(Image.open("images/kanizsa_triangle.gif"),dtype=float)/255
-img3 = np.array(Image.open("images/coins.jpg"),dtype=float)/255
+img2 = np.array(Image.open("images/coins.jpg"),dtype=float)/255
+img3 = np.array(Image.open("images/lotsofcoins.jpg"),dtype=float)/255
 
 
 """IniCurveDraw(image,number of points)
@@ -68,9 +68,6 @@ def extenergy(fx,fy,fxy,fxx,fyy):
 	FX = -2*(fx*fxx + fy*fxy)
 	FY = -2*(fx*fxy + fy*fyy)
 
-	#IX = interp.InterpImage(FX)
-	#IY = interp.InterpImage(FY)
-
 	return FX,FY
 
 """
@@ -110,7 +107,7 @@ def calculate(im,x, y, Fp, alpha, beta, tau, gamma):
 
 	Minv = sysmatrix(len(x),alpha,beta,tau)
 
-	for c in xrange(30000): # number of iterations
+	for c in xrange(10000): # number of iterations
 	    for i in xrange(len(x)):
 	    	#bx = Fp[0].bilinear(int(x[i]),int(y[i]))
 	    	#by = Fp[1].bilinear(int(x[i]),int(y[i]))
@@ -128,7 +125,8 @@ def calculate(im,x, y, Fp, alpha, beta, tau, gamma):
 	    	plt.plot(np.append(x,[x[0]]), np.append(y,[y[0]]), "r-")
 	    	plt.draw()
 
-	#plt.show()
+
+
 	userinput()
 
 #--------------------------------------------------------------------------
@@ -147,8 +145,8 @@ def userinput():
 	print "Choose between 2 images. \n"
 	print "-"*45
 	print "1. Black square"
-	print "2. Kanizsa triangle"
-	print "3. Coins"
+	print "2. Coins"
+	print "3. Lot of coins"
 	print "4. Exit"
 	print "-"*45
 	usercmd = raw_input("Choose an option: ")
@@ -184,7 +182,7 @@ def commands(cmd):
 
 	print "You have 5 seconds to choose points for the initial curve \n"
 	
-	x,y = IniCurveDraw(im, 100)
+	x,y = IniCurveDraw(im, 200) # set number of points for interpolatation
 	fx,fy,fxy,fxx,fyy=derive(im)
 	Fp = extenergy(fx,fy,fxy,fxx,fyy)
 	alpha, beta, tau, gamma = vari()
@@ -202,8 +200,3 @@ def main():
 if __name__ =='__main__':
     main(); 
 
-
-"""
-alpha :      elasticity parameter (membrane)
-beta :       rigidity parameter (thin plate)
-"""
