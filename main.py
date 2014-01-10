@@ -190,7 +190,6 @@ def commands(cmd):
 		x,y = IniCurveDraw(img3, 100)
 		Fp = extenergy(img3)
 
-
 	elif cmd == "4":
 		print "Quit succesfully."
 		raise SystemExit()
