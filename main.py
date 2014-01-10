@@ -65,8 +65,8 @@ def derive(im):
 
 def extenergy(fx,fy,fxy,fxx,fyy):
 
-	FX = -2*(fx*fxx - fy*fxy)
-	FY = -2*(fx*fxy - fy*fyy)
+	FX = -2*(fx*fxx + fy*fxy)
+	FY = -2*(fx*fxy + fy*fyy)
 
 	#IX = interp.InterpImage(FX)
 	#IY = interp.InterpImage(FY)
@@ -110,25 +110,21 @@ def calculate(im,x, y, Fp, alpha, beta, tau, gamma):
 
 	Minv = sysmatrix(len(x),alpha,beta,tau)
 
-	for c in xrange(1000): # number of iterations
+	for c in xrange(30000): # number of iterations
 	    for i in xrange(len(x)):
 	    	#bx = Fp[0].bilinear(int(x[i]),int(y[i]))
 	    	#by = Fp[1].bilinear(int(x[i]),int(y[i]))
     		new_x[i] = x[i]-gamma*Fp[0][int(x[i]),int(y[i])]
     		new_y[i] = y[i]-gamma*Fp[1][int(x[i]),int(y[i])]
 
-	    x = np.dot(Minv,new_x) #which to use?
+	    x = np.dot(Minv,new_x)
 	    y = np.dot(Minv,new_y)
-
-
-	    #x = np.dot(x, Minv) #or this one? Neither is really good
-	    #y = np.dot(y, Minv)
 
 	    x = np.squeeze(np.asarray(x)) 
 	    y = np.squeeze(np.asarray(y)) 
 
 
-	    if c % 100 == 0: 
+	    if c % 500 == 0: 
 	    	plt.plot(np.append(x,[x[0]]), np.append(y,[y[0]]), "r-")
 	    	plt.draw()
 
