@@ -182,28 +182,24 @@ def commands(cmd):
 		print "You have 5 seconds to choose points for the initial curve \n"
 		x,y = IniCurveDraw(img1, 100)
 		Fp = extenergy(img1)
-		alpha, beta, tau, gamma = vari()
-		calculate(x, y, Fp, alpha, beta, tau, gamma)
-
+		
 	elif cmd == "2":
 		print "You have 5 seconds to choose points for the initial curve \n"		
 		x,y = IniCurveDraw(img2, 100)
 		Fp = extenergy(img2)
-		alpha, beta, tau, gamma = vari()
-		calculate(x, y, Fp, alpha, beta, tau, gamma)
 
 	elif cmd == "3":
 		print "You have 5 seconds to choose points for the initial curve \n"		
 		x,y = IniCurveDraw(img3, 100)
 		Fp = extenergy(img3)
-		alpha, beta, tau, gamma = vari()
-		calculate(x, y, Fp, alpha, beta, tau, gamma)
 
 	elif cmd == "4":
 		print "Quit succesfully."
 		raise SystemExit()
 
 
+	alpha, beta, tau, gamma = vari()
+	calculate(x, y, Fp, alpha, beta, tau, gamma)
 
 
 """main()
