@@ -53,7 +53,7 @@ def sysmatrix(N,alpha,beta,tau):
 	return Matrix
 
 def derive(im):
-	sigma = 1.4
+	sigma = 5
 	fx = np.array(gaus(im,sigma,order=(1,0)),dtype=float)
 	fy = np.array(gaus(im,sigma,order=(0,1)),dtype=float)
 	fxy = np.array(gaus(im, sigma,order=(1,1)),dtype=float)
@@ -65,8 +65,8 @@ def derive(im):
 
 def extenergy(fx,fy,fxy,fxx,fyy):
 
-	FX = -2*(fx*fxx + fy*fxy)
-	FY = -2*(fx*fxy + fy*fyy)
+	FX = -2*(fx*fxx - fy*fxy)
+	FY = -2*(fx*fxy - fy*fyy)
 
 	#IX = interp.InterpImage(FX)
 	#IY = interp.InterpImage(FY)
@@ -121,11 +121,14 @@ def calculate(im,x, y, Fp, alpha, beta, tau, gamma):
 	    y = np.dot(Minv,new_y)
 
 
+	    #x = np.dot(x, Minv) #or this one? Neither is really good
+	    #y = np.dot(y, Minv)
+
 	    x = np.squeeze(np.asarray(x)) 
 	    y = np.squeeze(np.asarray(y)) 
 
 
-	    if c % 200 == 0: 
+	    if c % 50 == 0: 
 	    	plt.plot(np.append(x,[x[0]]), np.append(y,[y[0]]), "r-")
 	    	plt.draw()
 
@@ -188,7 +191,6 @@ def commands(cmd):
 	x,y = IniCurveDraw(im, 100)
 	fx,fy,fxy,fxx,fyy=derive(im)
 	Fp = extenergy(fx,fy,fxy,fxx,fyy)
-	print Fp
 	alpha, beta, tau, gamma = vari()
 	calculate(im, x, y, Fp, alpha, beta, tau, gamma)
 
