@@ -1,13 +1,10 @@
 from __future__ import division
 from scipy.ndimage.filters import gaussian_filter as gaus
-from resample import resample
 from splinedraw import *
 from PIL import Image
 from scipy.interpolate import *
 import matplotlib.pyplot as plt
 import numpy as np
-import math
-import interpimage as interp
 
 
 plt.gray() #print everything gray
@@ -49,11 +46,11 @@ def sysmatrix(N,alpha,beta,tau):
 	for p in xrange(1, len(M)):
 	    M[p] = np.roll(M[p-1],1)
 	M = np.linalg.inv(M) 
-	Matrix = np.matrix(M)
-	return Matrix
+
+	return M
 
 def derive(im):
-	sigma = 5
+	sigma = 3
 	fx = np.array(gaus(im,sigma,order=(1,0)),dtype=float)
 	fy = np.array(gaus(im,sigma,order=(0,1)),dtype=float)
 	fxy = np.array(gaus(im, sigma,order=(1,1)),dtype=float)
@@ -107,19 +104,23 @@ def calculate(im,x, y, Fp, alpha, beta, tau, gamma):
 
 	Minv = sysmatrix(len(x),alpha,beta,tau)
 
+<<<<<<< HEAD
 	for c in xrange(10000): # number of iterations
+=======
+
+	for c in xrange(30000): # number of iterations
+>>>>>>> 45a88b993b7813c978cce7feae93a0520ff3946f
 	    for i in xrange(len(x)):
 	    	#bx = Fp[0].bilinear(int(x[i]),int(y[i]))
 	    	#by = Fp[1].bilinear(int(x[i]),int(y[i]))
-    		new_x[i] = x[i]-gamma*Fp[0][int(x[i]),int(y[i])]
-    		new_y[i] = y[i]-gamma*Fp[1][int(x[i]),int(y[i])]
+    		new_x[i] = x[i]-gamma*Fp[0][x[i],y[i]]
+    		new_y[i] = y[i]-gamma*Fp[1][x[i],y[i]]
 
 	    x = np.dot(Minv,new_x)
 	    y = np.dot(Minv,new_y)
 
 	    x = np.squeeze(np.asarray(x)) 
 	    y = np.squeeze(np.asarray(y)) 
-
 
 	    if c % 500 == 0: 
 	    	plt.plot(np.append(x,[x[0]]), np.append(y,[y[0]]), "r-")
