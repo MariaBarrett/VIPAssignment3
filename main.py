@@ -21,7 +21,6 @@ img3 = np.array(Image.open("images/coins.jpg"))
 This function takes an image and gives you 5 sec to select some points. 
 From these it draws an interpolated closed spline of num points. 
 It calls Francois' functions to get initial curve and to draw it. 
-The interpolated points are plotted using green circles
 """
 def IniCurveDraw(im, num):
 
@@ -60,8 +59,8 @@ def extenergy(im):
 	fyy = np.array(gaus(im,sigma,order=(0,2)))
 
 
-	FX = -2*(fx*fxx + fy*fxy)
-	FY = -2*(fx*fxy + fy*fyy)
+	FX = -2*(fx*fxx - fy*fxy)
+	FY = -2*(fx*fxy - fy*fyy)
 
 	IX = interp.InterpImage(FX)
 	IY = interp.InterpImage(FY)
@@ -111,7 +110,7 @@ def calculate(x, y, Fp, alpha, beta, tau, gamma):
 
 	Minv = sysmatrix(len(x),alpha,beta,tau)
 
-	for c in xrange(100): # number of iterations
+	for c in xrange(200): # number of iterations
 	    for i in range(len(x)):
 	        bx = Fp[0].bilinear(x[i],y[i]) #Wrong
 	        new_x[i] = x[i]-gamma*bx
@@ -125,7 +124,7 @@ def calculate(x, y, Fp, alpha, beta, tau, gamma):
 	    x = np.matrix(x)
 	    y = np.matrix(y)
 
-	    x = np.dot(Minv, np.transpose(x)) #which to use?
+	    x = np.dot(Minv, np.transpose(x)) #which to use? This?
 	    y = np.dot(Minv, np.transpose(y))
 
 	    #x = np.dot(x, Minv) #or this one? Neither is really good
@@ -134,9 +133,9 @@ def calculate(x, y, Fp, alpha, beta, tau, gamma):
 	    x = np.squeeze(np.asarray(x)) 
 	    y = np.squeeze(np.asarray(y)) 
 	    	
-	    if c % 10 == 0: 
-	    	print x
-	    	plt.plot(np.append(x,[x[0]]), np.append(y,[y[0]]), "r-")
+	    #if c % 10 == 0: 
+	    #	print x
+	    #	plt.plot(np.append(x,[x[0]]), np.append(y,[y[0]]), "r-")
 
 	plt.show()
 	userinput()
@@ -182,7 +181,7 @@ def commands(cmd):
 		print "You have 5 seconds to choose points for the initial curve \n"
 		x,y = IniCurveDraw(img1, 100)
 		Fp = extenergy(img1)
-		
+
 	elif cmd == "2":
 		print "You have 5 seconds to choose points for the initial curve \n"		
 		x,y = IniCurveDraw(img2, 100)
