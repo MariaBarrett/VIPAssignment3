@@ -104,12 +104,8 @@ def calculate(im,x, y, Fp, alpha, beta, tau, gamma):
 
 	Minv = sysmatrix(len(x),alpha,beta,tau)
 
-<<<<<<< HEAD
-	for c in xrange(10000): # number of iterations
-=======
 
 	for c in xrange(30000): # number of iterations
->>>>>>> 45a88b993b7813c978cce7feae93a0520ff3946f
 	    for i in xrange(len(x)):
 	    	#bx = Fp[0].bilinear(int(x[i]),int(y[i]))
 	    	#by = Fp[1].bilinear(int(x[i]),int(y[i]))
