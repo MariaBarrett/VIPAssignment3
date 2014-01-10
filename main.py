@@ -22,7 +22,6 @@ img3 = np.array(Image.open("images/coins.jpg"),dtype=float)
 This function takes an image and gives you 5 sec to select some points. 
 From these it draws an interpolated closed spline of num points. 
 It calls Francois' functions to get initial curve and to draw it. 
-The interpolated points are plotted using green circles
 """
 def IniCurveDraw(im, num):
 
@@ -61,8 +60,8 @@ def extenergy(im):
 	fyy = np.array(gaus(im,sigma,order=(0,2)),dtype=float)
 
 
-	FX = -2*(fx*fxx + fy*fxy)
-	FY = -2*(fx*fxy + fy*fyy)
+	FX = -2*(fx*fxx - fy*fxy)
+	FY = -2*(fx*fxy - fy*fyy)
 
 	IX = interp.InterpImage(FX)
 	IY = interp.InterpImage(FY)
@@ -125,11 +124,13 @@ def calculate(x, y, Fp, alpha, beta, tau, gamma):
 	    x = np.dot(Minv,np.transpose(x)) #which to use?
 	    y = np.dot(Minv,np.transpose(y))
 
+
 	    #x = np.dot(x, Minv) #or this one? Neither is really good
 	    #y = np.dot(y, Minv)
 
 	    x = np.squeeze(np.asarray(x)) 
 	    y = np.squeeze(np.asarray(y)) 
+
 
 	    if c % 1 == 0: 
 	    	plt.plot(np.append(x,[x[0]]), np.append(y,[y[0]]), "r-")
