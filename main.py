@@ -6,6 +6,7 @@ from PIL import Image
 from scipy.interpolate import *
 import matplotlib.pyplot as plt
 import numpy as np
+import math
 import interpimage as interp
 
 
@@ -13,9 +14,9 @@ plt.gray() #print everything gray
 plt.ion() #interactive mode
 
 #-------------------------------------------------------------------------
-img1 = np.array(Image.open("images/blacksquare.png"),dtype=float)
-img2 = np.array(Image.open("images/kanizsa_triangle.gif"),dtype=float)
-img3 = np.array(Image.open("images/coins.jpg"),dtype=float)
+img1 = np.array(Image.open("images/blacksquare.png"),dtype=float)/255
+img2 = np.array(Image.open("images/kanizsa_triangle.gif"),dtype=float)/255
+img3 = np.array(Image.open("images/coins.jpg"),dtype=float)/255
 
 
 """IniCurveDraw(image,number of points)
@@ -67,10 +68,10 @@ def extenergy(fx,fy,fxy,fxx,fyy):
 	FX = -2*(fx*fxx - fy*fxy)
 	FY = -2*(fx*fxy - fy*fyy)
 
-	IX = interp.InterpImage(FX)
-	IY = interp.InterpImage(FY)
+	#IX = interp.InterpImage(FX)
+	#IY = interp.InterpImage(FY)
 
-	return IX,IY
+	return FX,FY
 
 """
 def vari()
@@ -103,40 +104,28 @@ def calculate(x, y, Fp, alpha, beta, tau, gamma)
 This function calls the systemmatrix function to calculate the inv matrix
 From the array of x and y coordinates it updates the values and plots a fraction of them onto the image
 """
-def calculate(x, y, Fp, alpha, beta, tau, gamma):
+def calculate(im,x, y, Fp, alpha, beta, tau, gamma):
 	new_x = np.copy(x)
 	new_y = np.copy(y)
 
 	Minv = sysmatrix(len(x),alpha,beta,tau)
 
-	for c in xrange(10): # number of iterations
-	    for i in xrange(x.size):
-	    	print (Fp[0].bilinear(x[i],y[i])),(Fp[1].bilinear(x[i],y[i]))
-	    	bx = Fp[0].bilinear(x[i],y[i])
-	    	by = Fp[1].bilinear(x[i],y[i])
-	    	if bx < 30:
-        		new_x[i] = x[i]-gamma*bx
-        	elif by < 30:
-        		new_y[i] = y[i]-gamma*by
+	for c in xrange(1000): # number of iterations
+	    for i in xrange(len(x)):
+	    	#bx = Fp[0].bilinear(int(x[i]),int(y[i]))
+	    	#by = Fp[1].bilinear(int(x[i]),int(y[i]))
+    		new_x[i] = x[i]-gamma*Fp[0][int(x[i]),int(y[i])]
+    		new_y[i] = y[i]-gamma*Fp[1][int(x[i]),int(y[i])]
 
-	    x = new_x
-	    y = new_y
+	    x = np.dot(Minv,new_x) #which to use?
+	    y = np.dot(Minv,new_y)
 
-	    x = np.matrix(x)
-	    y = np.matrix(y)
-
-	    x = np.dot(Minv,np.transpose(x)) #which to use?
-	    y = np.dot(Minv,np.transpose(y))
-
-
-	    #x = np.dot(x, Minv) #or this one? Neither is really good
-	    #y = np.dot(y, Minv)
 
 	    x = np.squeeze(np.asarray(x)) 
 	    y = np.squeeze(np.asarray(y)) 
 
 
-	    if c % 1 == 0: 
+	    if c % 200 == 0: 
 	    	plt.plot(np.append(x,[x[0]]), np.append(y,[y[0]]), "r-")
 	    	plt.draw()
 
@@ -200,7 +189,7 @@ def commands(cmd):
 	fx,fy,fxy,fxx,fyy=derive(im)
 	Fp = extenergy(fx,fy,fxy,fxx,fyy)
 	alpha, beta, tau, gamma = vari()
-	calculate(x, y, Fp, alpha, beta, tau, gamma)
+	calculate(im, x, y, Fp, alpha, beta, tau, gamma)
 
 
 
