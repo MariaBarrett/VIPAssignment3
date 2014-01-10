@@ -64,8 +64,8 @@ def derive(im):
 
 def extenergy(fx,fy,fxy,fxx,fyy):
 
-	FX = -2*(fx*fxx - fy*fxy)
-	FY = -2*(fx*fxy - fy*fyy)
+	FX = -2*(fx*fxx + fy*fxy)
+	FY = -2*(fx*fxy + fy*fyy)
 
 	IX = interp.InterpImage(FX)
 	IY = interp.InterpImage(FY)
@@ -199,6 +199,7 @@ def commands(cmd):
 	x,y = IniCurveDraw(im, 100)
 	fx,fy,fxy,fxx,fyy=derive(im)
 	Fp = extenergy(fx,fy,fxy,fxx,fyy)
+	print Fp
 	alpha, beta, tau, gamma = vari()
 	calculate(x, y, Fp, alpha, beta, tau, gamma)
 
