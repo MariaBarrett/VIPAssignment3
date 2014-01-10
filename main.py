@@ -51,7 +51,7 @@ def sysmatrix(N,alpha,beta,tau):
 	Matrix = np.matrix(M)
 	return Matrix
 
-def extenergy(im):
+def derive(im):
 	sigma = 1.4
 	fx = np.array(gaus(im,sigma,order=(1,0)),dtype=float)
 	fy = np.array(gaus(im,sigma,order=(0,1)),dtype=float)
@@ -59,6 +59,10 @@ def extenergy(im):
 	fxx = np.array(gaus(im, sigma,order=(2,0)),dtype=float)
 	fyy = np.array(gaus(im,sigma,order=(0,2)),dtype=float)
 
+
+	return fx,fy,fxy,fxx,fyy
+
+def extenergy(fx,fy,fxy,fxx,fyy):
 
 	FX = -2*(fx*fxx - fy*fxy)
 	FY = -2*(fx*fxy - fy*fyy)
@@ -177,24 +181,24 @@ def commands(cmd):
 		userinput()
 
 	elif cmd == "1":
-		print "You have 5 seconds to choose points for the initial curve \n"
-		x,y = IniCurveDraw(img1, 100)
-		Fp = extenergy(img1)
+		im = img1
+		
+	elif cmd == "2":		
+		im = img2
 
-	elif cmd == "2":
-		print "You have 5 seconds to choose points for the initial curve \n"		
-		x,y = IniCurveDraw(img2, 100)
-		Fp = extenergy(img2)
-
-	elif cmd == "3":
-		print "You have 5 seconds to choose points for the initial curve \n"		
-		x,y = IniCurveDraw(img3, 100)
-		Fp = extenergy(img3)
+	elif cmd == "3":	
+		im = img3
 
 	elif cmd == "4":
 		print "Quit succesfully."
 		raise SystemExit()
+		
 
+	print "You have 5 seconds to choose points for the initial curve \n"
+	
+	x,y = IniCurveDraw(im, 100)
+	fx,fy,fxy,fxx,fyy=derive(im)
+	Fp = extenergy(fx,fy,fxy,fxx,fyy)
 	alpha, beta, tau, gamma = vari()
 	calculate(x, y, Fp, alpha, beta, tau, gamma)
 
