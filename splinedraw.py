@@ -43,10 +43,10 @@ def getInitialCurve(im, nbr_points):
 def drawCurve(x,y, im=None):
     """ Draw the curve specified by coordinates x and y on top of the 
     image im. The curve is closed. """
-    if not im == None:
-        im = np.array(im)
-        plt.gray()
-        plt.imshow(np.flipud(im), origin='lower')
+    #if not im == None:
+    #    im = np.array(im)
+    #    plt.gray()
+     #   plt.imshow(np.flipud(im), origin='lower')
 
     x = np.array(x)
     y = np.array(y)

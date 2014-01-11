@@ -10,10 +10,12 @@ plt.gray() #print everything gray
 plt.ion()
 #-------------------------------------------------------------------------
 img1 = np.array(Image.open("images/blacksquare.png").convert('L'),dtype=float)/255
-img2 = np.array(Image.open("images/coins.jpg").convert('L'),dtype=float)/255
+#img2 = np.array(Image.open("images/coins.jpg").convert('L'),dtype=float)/255
 #img3 = np.array(Image.open("images/lotsofcoins.jpg").convert('L'),dtype=float)/255
 #img3 = np.array(Image.open("images/apple.jpg").convert('L'),dtype=float)/255
+img2 = np.array(Image.open("images/trees.png").convert('L'),dtype=float)/255
 img3 = np.array(Image.open("images/gestalt.jpg").convert('L'),dtype=float)/255
+
 
 """IniCurveDraw(image,number of points)
 This function takes an image and gives you 5 sec to select some points. 
@@ -21,7 +23,7 @@ From these it draws an interpolated closed spline of num points.
 It calls Francois' functions to get initial curve and to draw it. 
 """
 def IniCurveDraw(im, num):
-	plt.imshow(im)
+	#plt.imshow(im)
 	x, y, points = getInitialCurve(im, num)
 	drawCurve(x,y,im)
 	return x, y
@@ -103,7 +105,7 @@ def calculate(im,x, y, Fp, alpha, beta, tau, gamma):
 	Minv = sysmatrix(len(x),alpha,beta,tau)
 
 
-	for c in xrange(1000): # number of iterations
+	for c in xrange(20000): # number of iterations
 	    for i in xrange(len(x)):
     		new_x[i] = x[i]-gamma*Fp[0][x[i],y[i]]
     		new_y[i] = y[i]-gamma*Fp[1][x[i],y[i]]
@@ -114,7 +116,7 @@ def calculate(im,x, y, Fp, alpha, beta, tau, gamma):
 	    x = np.squeeze(np.asarray(x)) 
 	    y = np.squeeze(np.asarray(y))
 
-	    if c % 100 == 0: 
+	    if c % 1000 == 0: 
 	    	plt.plot(np.append(x,[x[0]]), np.append(y,[y[0]]), "r-")
 	    	plt.draw()
 
@@ -135,7 +137,7 @@ def userinput():
 	print "Choose an image. \n"
 	print "-"*45
 	print "1. Black square"
-	print "2. Coins"
+	print "2. Trees"
 	print "3. Gestalt"
 	print "4. Exit"
 	print "-"*45
