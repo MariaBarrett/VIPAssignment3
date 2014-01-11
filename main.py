@@ -23,8 +23,7 @@ From these it draws an interpolated closed spline of num points.
 It calls Francois' functions to get initial curve and to draw it. 
 """
 def IniCurveDraw(im, num):
-
-	plt.imshow(im)
+	#plt.imshow(im)
 	x, y, points = getInitialCurve(im, num)
 	drawCurve(x,y,im)
 	return x, y
@@ -124,9 +123,6 @@ def calculate(im,x, y, Fp, alpha, beta, tau, gamma):
 	    	plt.draw()
 
 
-
-	userinput()
-
 #--------------------------------------------------------------------------
 #Interface
 ##Settings 
@@ -157,7 +153,7 @@ It then calls settings-functions which promps the user for entering settings for
 When that function is done, it will call userinput() again.
 """
 def commands(cmd):
-	plt.close()
+	#plt.close()
 	legal = ["1","2","3","4"]
 
 	if cmd not in legal:
