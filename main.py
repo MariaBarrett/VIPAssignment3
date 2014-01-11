@@ -6,9 +6,7 @@ from scipy.interpolate import *
 import matplotlib.pyplot as plt
 import numpy as np
 
-
 plt.gray() #print everything gray
-plt.ion() #interactive mode
 
 #-------------------------------------------------------------------------
 img1 = np.array(Image.open("images/blacksquare.png").convert('L'),dtype=float)/255
@@ -23,7 +21,7 @@ From these it draws an interpolated closed spline of num points.
 It calls Francois' functions to get initial curve and to draw it. 
 """
 def IniCurveDraw(im, num):
-	#plt.imshow(im)
+	plt.imshow(im)
 	x, y, points = getInitialCurve(im, num)
 	drawCurve(x,y,im)
 	return x, y
@@ -107,16 +105,14 @@ def calculate(im,x, y, Fp, alpha, beta, tau, gamma):
 
 	for c in xrange(1000): # number of iterations
 	    for i in xrange(len(x)):
-	    	#bx = Fp[0].bilinear(int(x[i]),int(y[i]))
-	    	#by = Fp[1].bilinear(int(x[i]),int(y[i]))
     		new_x[i] = x[i]-gamma*Fp[0][x[i],y[i]]
     		new_y[i] = y[i]-gamma*Fp[1][x[i],y[i]]
 
-	    x = np.dot(Minv,new_x)
-	    y = np.dot(Minv,new_y)
+	    x = np.dot(Minv,new_x).T
+	    y = np.dot(Minv,new_y).T
 
 	    x = np.squeeze(np.asarray(x)) 
-	    y = np.squeeze(np.asarray(y)) 
+	    y = np.squeeze(np.asarray(y))
 
 	    if c % 100 == 0: 
 	    	plt.plot(np.append(x,[x[0]]), np.append(y,[y[0]]), "r-")
@@ -181,7 +177,13 @@ def commands(cmd):
 	Fp = extenergy(fx,fy,fxy,fxx,fyy)
 	alpha, beta, tau, gamma = vari()
 	calculate(im, x, y, Fp, alpha, beta, tau, gamma)
+<<<<<<< HEAD
 	userinput()
+=======
+
+	userinput()
+
+>>>>>>> 849299e44e12e45c14abb63cf096e8f2aeb06f86
 
 
 """main()
