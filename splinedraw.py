@@ -18,7 +18,7 @@ def getInitialCurve(im, nbr_points):
     """
     im = np.array(im)
     plt.gray()
-    plt.imshow(im)
+    plt.imshow(np.flipud(im), origin='lower')
     vertices = np.array(plt.ginput(0, timeout=5))
     # I add an extra point to close the curve
     # this is for spline interpolation
@@ -31,7 +31,6 @@ def getInitialCurve(im, nbr_points):
     nbr_vertices = len(vx)
     t = np.linspace(0,nbr_vertices,nbr_vertices) #returns an array of numbers from 0 to nbr of clicks+1. Num of samples are also nbr of clicks+1. E.g. 4 clicks: ([0., x.x, x.x, x.x, 5.])
     sx = interpolate.splrep(t, vx, s= 0) 
-    print sx
     sy = interpolate.splrep(t, vy, s= 0)
     tnew = np.linspace(0, nbr_vertices, nbr_points+1)
     
@@ -47,17 +46,19 @@ def drawCurve(x,y, im=None):
     if not im == None:
         im = np.array(im)
         plt.gray()
-        plt.imshow(im)
-    
+        plt.imshow(np.flipud(im), origin='lower')
+
     x = np.array(x)
     y = np.array(y)
     
     cx = np.append(x, x[0])
     cy = np.append(y, y[0])
+    plt.axis([0, len(im[1]), 0, len(im)])
     plt.plot(cx, cy, '+-')
+    #plt.gca().invert_xaxis()
+    #plt.gca().invert_yaxis()
+    plt.show
      
-    
-    
     
     
 if __name__ == "__main__":
