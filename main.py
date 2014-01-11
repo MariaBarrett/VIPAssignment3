@@ -120,7 +120,7 @@ def calculate(im,x, y, Fp, alpha, beta, tau, gamma):
 	    y = np.squeeze(np.asarray(y)) 
 
 	    if c % 500 == 0: 
-	    	plt.plot(np.append(x,[x[0]]), np.append(y,[y[0]]), "r-")
+	    	plt.plot(np.append(x,[x[0]]).T, np.append(y,[y[0]]).T, "r-")
 	    	plt.draw()
 
 
