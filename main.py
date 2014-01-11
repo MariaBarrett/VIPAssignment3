@@ -9,12 +9,15 @@ import numpy as np
 plt.gray() #print everything gray
 plt.ion()
 #-------------------------------------------------------------------------
-img1 = np.array(Image.open("images/blacksquare.png").convert('L'),dtype=float)/255
+img1 = np.zeros((300,300))
+img1[120:180,120:180] = 1.0
+
 #img2 = np.array(Image.open("images/coins.jpg").convert('L'),dtype=float)/255
 #img3 = np.array(Image.open("images/lotsofcoins.jpg").convert('L'),dtype=float)/255
 #img3 = np.array(Image.open("images/apple.jpg").convert('L'),dtype=float)/255
 img2 = np.array(Image.open("images/trees.png").convert('L'),dtype=float)/255
-img3 = np.array(Image.open("images/gestalt.jpg").convert('L'),dtype=float)/255
+img3 = np.array(Image.open("images/brokencircle.jpg").convert('L'),dtype=float)/255
+img4 = np.array(Image.open("images/circles.jpg").convert('L'),dtype=float)/255
 
 
 """IniCurveDraw(image,number of points)
@@ -105,7 +108,7 @@ def calculate(im,x, y, Fp, alpha, beta, tau, gamma):
 	Minv = sysmatrix(len(x),alpha,beta,tau)
 
 
-	for c in xrange(20000): # number of iterations
+	for c in xrange(10000): # number of iterations
 	    for i in xrange(len(x)):
     		new_x[i] = x[i]-gamma*Fp[0][x[i],y[i]]
     		new_y[i] = y[i]-gamma*Fp[1][x[i],y[i]]
@@ -116,7 +119,7 @@ def calculate(im,x, y, Fp, alpha, beta, tau, gamma):
 	    x = np.squeeze(np.asarray(x)) 
 	    y = np.squeeze(np.asarray(y))
 
-	    if c % 1000 == 0: 
+	    if c % 100 == 0: 
 	    	plt.plot(np.append(x,[x[0]]), np.append(y,[y[0]]), "r-")
 	    	plt.draw()
 
@@ -138,8 +141,9 @@ def userinput():
 	print "-"*45
 	print "1. Black square"
 	print "2. Trees"
-	print "3. Gestalt"
-	print "4. Exit"
+	print "3. Broken Circle"
+	print "4. Many circles"
+	print "5. Exit"
 	print "-"*45
 	usercmd = raw_input("Choose an option: ")
 	commands(usercmd)
@@ -152,7 +156,7 @@ When that function is done, it will call userinput() again.
 """
 def commands(cmd):
 	plt.close()
-	legal = ["1","2","3","4"]
+	legal = ["1","2","3","4","5"]
 
 	if cmd not in legal:
 		print "Invalid input. Please enter one of the possible values.\n"
@@ -167,7 +171,10 @@ def commands(cmd):
 	elif cmd == "3":	
 		im = img3
 
-	elif cmd == "4":
+	elif cmd == "4":	
+		im = img4
+		
+	elif cmd == "5":
 		print "Quit succesfully."
 		raise SystemExit()
 		
