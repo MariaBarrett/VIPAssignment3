@@ -105,7 +105,7 @@ def calculate(im,x, y, Fp, alpha, beta, tau, gamma):
 	Minv = sysmatrix(len(x),alpha,beta,tau)
 
 
-	for c in xrange(10000): # number of iterations
+	for c in xrange(1000): # number of iterations
 	    for i in xrange(len(x)):
 	    	#bx = Fp[0].bilinear(int(x[i]),int(y[i]))
 	    	#by = Fp[1].bilinear(int(x[i]),int(y[i]))
@@ -118,7 +118,7 @@ def calculate(im,x, y, Fp, alpha, beta, tau, gamma):
 	    x = np.squeeze(np.asarray(x)) 
 	    y = np.squeeze(np.asarray(y)) 
 
-	    if c % 500 == 0: 
+	    if c % 100 == 0: 
 	    	plt.plot(np.append(x,[x[0]]), np.append(y,[y[0]]), "r-")
 	    	plt.draw()
 
@@ -153,7 +153,7 @@ It then calls settings-functions which promps the user for entering settings for
 When that function is done, it will call userinput() again.
 """
 def commands(cmd):
-	#plt.close()
+	plt.close()
 	legal = ["1","2","3","4"]
 
 	if cmd not in legal:
@@ -181,7 +181,7 @@ def commands(cmd):
 	Fp = extenergy(fx,fy,fxy,fxx,fyy)
 	alpha, beta, tau, gamma = vari()
 	calculate(im, x, y, Fp, alpha, beta, tau, gamma)
-
+	userinput()
 
 
 """main()
