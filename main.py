@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 plt.gray() #print everything gray
-
+plt.ion()
 #-------------------------------------------------------------------------
 img1 = np.array(Image.open("images/blacksquare.png").convert('L'),dtype=float)/255
 img2 = np.array(Image.open("images/coins.jpg").convert('L'),dtype=float)/255
@@ -177,13 +177,8 @@ def commands(cmd):
 	Fp = extenergy(fx,fy,fxy,fxx,fyy)
 	alpha, beta, tau, gamma = vari()
 	calculate(im, x, y, Fp, alpha, beta, tau, gamma)
-<<<<<<< HEAD
-	userinput()
-=======
-
 	userinput()
 
->>>>>>> 849299e44e12e45c14abb63cf096e8f2aeb06f86
 
 
 """main()
