@@ -19,7 +19,7 @@ def getInitialCurve(im, nbr_points):
     im = np.array(im)
     plt.gray()
     plt.imshow(np.flipud(im), origin='lower')
-    vertices = np.array(plt.ginput(0, timeout=5))
+    vertices = np.array(plt.ginput(0, timeout=10))
     # I add an extra point to close the curve
     # this is for spline interpolation
     # I will remove it from the interpolant

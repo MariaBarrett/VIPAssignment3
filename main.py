@@ -14,9 +14,8 @@ img1[120:180,120:180] = 1.0
 
 #img2 = np.array(Image.open("images/coins.jpg").convert('L'),dtype=float)/255
 #img3 = np.array(Image.open("images/lotsofcoins.jpg").convert('L'),dtype=float)/255
-#img3 = np.array(Image.open("images/apple.jpg").convert('L'),dtype=float)/255
 img2 = np.array(Image.open("images/trees.png").convert('L'),dtype=float)/255
-img3 = np.array(Image.open("images/brokencircle.jpg").convert('L'),dtype=float)/255
+img3 = np.array(Image.open("images/gestaltcircle.jpg").convert('L'),dtype=float)/255
 img4 = np.array(Image.open("images/circles.jpg").convert('L'),dtype=float)/255
 
 
@@ -141,7 +140,7 @@ def userinput():
 	print "-"*45
 	print "1. Black square"
 	print "2. Trees"
-	print "3. Broken Circle"
+	print "3. Gestalt Circle"
 	print "4. Many circles"
 	print "5. Exit"
 	print "-"*45
