@@ -11,12 +11,8 @@ plt.ion()
 #-------------------------------------------------------------------------
 img1 = np.zeros((300,300))
 img1[120:180,120:180] = 1.0
-
-#img2 = np.array(Image.open("images/coins.jpg").convert('L'),dtype=float)/255
-#img3 = np.array(Image.open("images/lotsofcoins.jpg").convert('L'),dtype=float)/255
-img2 = np.array(Image.open("images/trees.png").convert('L'),dtype=float)/255
-img3 = np.array(Image.open("images/gestaltcircle.jpg").convert('L'),dtype=float)/255
-img4 = np.array(Image.open("images/circles.jpg").convert('L'),dtype=float)/255
+img2 = np.array(Image.open("images/brokencircle.jpg").convert('L'),dtype=float)/255
+img3 = np.array(Image.open("images/circles.jpg").convert('L'),dtype=float)/255
 
 
 """IniCurveDraw(image,number of points)
@@ -139,10 +135,9 @@ def userinput():
 	print "Choose an image. \n"
 	print "-"*45
 	print "1. Black square"
-	print "2. Trees"
-	print "3. Gestalt Circle"
-	print "4. Many circles"
-	print "5. Exit"
+	print "2. Broken Circle"
+	print "3. Many circles"
+	print "4. Exit"
 	print "-"*45
 	usercmd = raw_input("Choose an option: ")
 	commands(usercmd)
@@ -155,7 +150,7 @@ When that function is done, it will call userinput() again.
 """
 def commands(cmd):
 	plt.close()
-	legal = ["1","2","3","4","5"]
+	legal = ["1","2","3","4"]
 
 	if cmd not in legal:
 		print "Invalid input. Please enter one of the possible values.\n"
@@ -169,11 +164,8 @@ def commands(cmd):
 
 	elif cmd == "3":	
 		im = img3
-
-	elif cmd == "4":	
-		im = img4
 		
-	elif cmd == "5":
+	elif cmd == "4":
 		print "Quit succesfully."
 		raise SystemExit()
 		
