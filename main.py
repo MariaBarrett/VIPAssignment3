@@ -114,14 +114,13 @@ def calculate(im,x, y, Fp, alpha, beta, tau, gamma):
 	    x = np.squeeze(np.asarray(x)) 
 	    y = np.squeeze(np.asarray(y))
 
-	    if c % 1000 == 0: 
+	    if c % 1000 == 0: #plot every 1000 iteration
 	    	plt.plot(np.append(x,[x[0]]), np.append(y,[y[0]]), "r-")
 	    	plt.draw()
 
 
 #--------------------------------------------------------------------------
 #Interface
-##Settings 
 
 
 ## Menu 
@@ -170,7 +169,7 @@ def commands(cmd):
 		raise SystemExit()
 		
 
-	print "You have 5 seconds to choose points for the initial curve \n"
+	print "You have 10 seconds to choose points for the initial curve \n"
 	
 	x,y = IniCurveDraw(im, 200) # set number of points for interpolatation
 	fx,fy,fxy,fxx,fyy=derive(im)
