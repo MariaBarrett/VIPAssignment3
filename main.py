@@ -11,7 +11,7 @@ plt.ion()
 #-------------------------------------------------------------------------
 img1 = np.zeros((300,300))
 img1[120:180,120:180] = 1.0
-img2 = np.array(Image.open("images/brokencircle.jpg").convert('L'),dtype=float)/255
+img2 = np.array(Image.open("images/gestalt.jpg").convert('L'),dtype=float)/255
 img3 = np.array(Image.open("images/circles.jpg").convert('L'),dtype=float)/255
 
 
