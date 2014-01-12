@@ -82,7 +82,7 @@ def vari():
 	if len(v) == 4:
 		for elem in v:
 			try:
-    				float(elem) #don't know why it only accepts double indentation
+    				float(elem)
 			except ValueError:
     				print "Invalid input. Only int and floats allowed"
     				userinput()
@@ -119,7 +119,7 @@ def calculate(im,x, y, Fp, alpha, beta, tau, gamma):
 	    x = np.squeeze(np.asarray(x)) 
 	    y = np.squeeze(np.asarray(y))
 
-	    if c % 100 == 0: 
+	    if c % 1000 == 0: 
 	    	plt.plot(np.append(x,[x[0]]), np.append(y,[y[0]]), "r-")
 	    	plt.draw()
 
