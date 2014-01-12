@@ -117,7 +117,7 @@ We performed experiments on 3 images:
 \begin{enumerate}[(a)]
 \item A black square
 \item A gestalt circle where we wanted to find values that generate a nice, round circle.
-\item Many circles of different grayscale inside each other. Here we wanted to find values that made the snake attach to the outer light gray circle and not be pulled towards the darker circles.
+\item Many circles of different gray scale inside each other. Here we wanted to find values that made the snake attach to the outer light gray circle and not be pulled towards the darker circles.
 \end{enumerate}
 
 For all experiments, $\tau$ was 0.01, as to calculate in somewhat smooth steps. For all tested images this parameter setting ( $\alpha$=8,$\beta$=0,$\tau$=0.01,$\gamma$=500) leads to a good results.\\
@@ -298,7 +298,7 @@ With $\gamma$ 500, both $\alpha$ 1 and 50 (and values between) produce nice imag
 If we have $\alpha$ = 8 and $\gamma$ = 100 (pretty low) then a higher $\beta$ (50) can make the snake find the edge in fewer steps than with $\beta$ = 0 (Figure 5.3(a)). 
 \
 \subsection{Gestalt circle}
-The gestalt circle seems like the easiest task for the snake. Because it is circular and there are no other shapes in the imge than a circle (though broken), most values find the edge; $\alpha$ 4 to 1000 and $\gamma$ 8 to 1000 produce nice shapes (Figure 5.3(b),(c),(d) and Figure 5.4(a),(b))  On most images it's visible that the snake is pulled towards the lines and not the gaps. Only with $\gamma$ 5000 the snake is pulled over the edges and ends inside the circle. (Figure 5.4(c)) 
+The gestalt circle seems like the easiest task for the snake. Because it is circular and there are no other shapes in the image than a circle (though broken), most values find the edge; $\alpha$ 4 to 1000 and $\gamma$ 8 to 1000 produce nice shapes (Figure 5.3(b),(c),(d) and Figure 5.4(a),(b))  On most images it's visible that the snake is pulled towards the lines and not the gaps. Only with $\gamma$ 5000 the snake is pulled over the edges and ends inside the circle. (Figure 5.4(c)) 
 \
 \subsection{Many circles}
 If $\gamma$ is 500 then $\alpha$ up to 20 make the snake attach to the light gray circle (Figure 5.4(d) and Figure 5.5(a)). Higher $\alpha$ values make the external force relatively weaker and it does not attach to the light gray circle anymore, but attaches to the first dark gray circle it meets. (Figure 5.5(b)). 
